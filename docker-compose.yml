@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  flutter:
+    build: .
+    volumes:
+      - .:/app
+      - ~/.pub-cache:/root/.pub-cache
+    ports:
+      - "8080:8080"
+    command: flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0
