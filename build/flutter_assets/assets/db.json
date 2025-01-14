@@ -1,0 +1,29 @@
+{
+  "page_contents": [
+    {
+      "imagePath": "assets/images/slider1.png",
+      "title": "Acumula Puntos",
+      "description": "Recicla tus aparatos para que los recojamos y así gana puntos para canjearlos por descuentos en la tienda."
+    },
+    {
+      "imagePath": "assets/images/slider2.png",
+      "title": "Recicla Más",
+      "description": "Contribuye al medio ambiente reciclando más aparatos tecnológicos y ayudando a reducir la contaminación."
+    },
+    {
+      "imagePath": "assets/images/slider3.png",
+      "title": "Educación Ambiental",
+      "description": "Aprende sobre las mejores prácticas de reciclaje y cómo puedes ayudar a proteger el planeta."
+    },
+    {
+      "imagePath": "assets/images/slider4.png",
+      "title": "Eventos de Reciclaje",
+      "description": "Participa en eventos de reciclaje locales y conoce a otros entusiastas del reciclaje."
+    },
+    {
+      "imagePath": "assets/images/slider5.png",
+      "title": "Reporte de Impacto",
+      "description": "Consulta el impacto positivo de tus acciones de reciclaje en el medio ambiente."
+    }
+  ]
+}
