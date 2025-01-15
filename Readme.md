@@ -1,4 +1,4 @@
-# Project Name
+# Trash Tec Flutter App
 
 Docker setup and local development guide.
 
