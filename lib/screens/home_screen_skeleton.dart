@@ -10,7 +10,6 @@ class HomeScreenSkeleton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Facts skeleton
           buildSectionTitle(),
           buildFactsList(),
           const SizedBox(height: 24),
@@ -19,12 +18,10 @@ class HomeScreenSkeleton extends StatelessWidget {
           buildCategoriesGrid(),
           const SizedBox(height: 24),
 
-          // Benefits skeleton
           buildSectionTitle(),
           buildBenefitsList(),
           const SizedBox(height: 24),
 
-          // Reasons skeleton
           buildSectionTitle(),
           buildReasonsList(),
         ],

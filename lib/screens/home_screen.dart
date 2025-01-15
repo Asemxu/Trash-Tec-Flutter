@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.grey[300], // Placeholder color
+          color: Colors.grey[300],
         ),
         child: Stack(
           children: [
@@ -374,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.grey[300], // Placeholder color
+          color: Colors.grey[300],
         ),
         child: Stack(
           children: [

@@ -1,4 +1,3 @@
-// lib/widgets/page_content_widget.dart
 import 'package:flutter/material.dart';
 
 class PageContentWidget extends StatelessWidget {

@@ -1,4 +1,3 @@
-// lib/screens/fact_screen.dart
 import 'package:flutter/material.dart';
 import '../widgets/page_content_widget.dart';
 import '../models/page_content.dart'; 

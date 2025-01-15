@@ -1,4 +1,3 @@
-// lib/models/page_content.dart
 import 'dart:convert';
 
 class PageContent {
