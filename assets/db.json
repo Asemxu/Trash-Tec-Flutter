@@ -79,5 +79,34 @@
       "description": "Promueve la reutilización de materiales",
       "imageUrl": "assets/images/slash.png"
     }
+  ],
+  "pickUpDate": {
+    "date": "2024-03-20"
+  },
+  "collectionCenters": [
+    {
+      "id": "cc1",
+      "name": "Centro de Reciclaje San Borja",
+      "address": "Av. San Borja Norte 123",
+      "imageUrl": "assets/images/slash.png"
+    },
+    {
+      "id": "cc2",
+      "name": "Punto Ecológico Central",
+      "address": "Jr. Las Letras 456",
+      "imageUrl": "assets/images/slash.png"
+    },
+    {
+      "id": "cc3",
+      "name": "EcoRecicla San Borja",
+      "address": "Av. Aviación 789",
+      "imageUrl": "assets/images/slash.png"
+    },
+    {
+      "id": "cc4",
+      "name": "Centro Verde Municipal",
+      "address": "Calle Los Jazmines 321",
+      "imageUrl": "assets/images/slash.png"
+    }
   ]
 }

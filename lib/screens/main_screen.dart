@@ -5,75 +5,37 @@ import '../helpers/constants/navigation_item.dart';
 import '../models/home_content.dart';
 import '../widgets/error_boundary_widget.dart';
 import 'home_screen.dart';
+import 'calendar_screen.dart';
+
 import '../services/home_content_service.dart';
-import 'home_screen_skeleton.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainScreen> createState() => MainScreenState();
 }
 
-
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-  late Future<HomeScreenData> _homeDataFuture;
-  final HomeContentService _contentService = HomeContentService();
+class MainScreenState extends State<MainScreen> {
+  int selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    _homeDataFuture = _loadHomeData();
-  }
-
-  Future<HomeScreenData> _loadHomeData() async {
-    await Future.delayed(const Duration(seconds: 2));
-    final facts = await _contentService.getFacts();
-    final categories = await _contentService.getCategories();
-    final benefits = await _contentService.getBenefits();
-    final reasons = await _contentService.getReasons();
-
-    return HomeScreenData(
-      facts: facts,
-      categories: categories,
-      benefits: benefits,
-      reasons: reasons,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(navigationItems[_selectedIndex].label),
+        title: Text(navigationItems[selectedIndex].label),
       ),
       body: ErrorBoundary(
         child: IndexedStack(
-          index: _selectedIndex,
+          index: selectedIndex,
           children: [
-            FutureBuilder<HomeScreenData>(
-              future: _homeDataFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return HomeScreenSkeleton();
-                }
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                if (!snapshot.hasData) {
-                  return Center(child: Text('No data available'));
-                }
-                
-                return HomeScreen(
-                  facts: snapshot.data!.facts,
-                  categories: snapshot.data!.categories,
-                  benefits: snapshot.data!.benefits,
-                  reasons: snapshot.data!.reasons,
-                );
-              },
-            ),
-            // const CalendarScreen(),
+            HomeScreen(),
+            CalendarScreen(),
             // const CenterScreen(),
             // const RecyclingScreen(),
             // const MoreScreen(),
@@ -81,11 +43,11 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
-        onTap: _handleNavigationTap,
+        onTap: handleNavigationTap,
         items: navigationItems.map((item) => BottomNavigationBarItem(
           icon: Icon(item.icon),
           label: item.label,
@@ -94,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _handleNavigationTap(int index) {
-    setState(() => _selectedIndex = index);
+  void handleNavigationTap(int index) {
+    setState(() => selectedIndex = index);
   }
 }

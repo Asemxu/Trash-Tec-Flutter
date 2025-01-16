@@ -12,24 +12,24 @@ class FactScreen extends StatefulWidget {
 class _FactScreenState extends State<FactScreen> {
   late Future<List<PageContent>> futurePageContents; 
   final PageContentService pageContentService = PageContentService();
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-  final int _numPages = 5;
+  final PageController pageController = PageController();
+  int currentPage = 0;
+  final int numPages = 5;
 
   @override
   void initState() {
     super.initState();
     futurePageContents = pageContentService.fetchPageContents();
-    _pageController.addListener(() {
+    pageController.addListener(() {
       setState(() {
-        _currentPage = _pageController.page?.round() ?? 0;
+        currentPage = pageController.page?.round() ?? 0;
       });
     });
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -52,10 +52,10 @@ class _FactScreenState extends State<FactScreen> {
 
           final pageContents = snapshot.data!;
           return PageView(
-            controller: _pageController,  // Add controller here
+            controller: pageController,  // Add controller here
             onPageChanged: (int page) {
               setState(() {
-                _currentPage = page;
+                currentPage = page;
               });
             },
             children: pageContents.map((content) {
@@ -68,11 +68,11 @@ class _FactScreenState extends State<FactScreen> {
           );
         },
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
+      bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
+  Widget buildBottomNavigationBar(BuildContext context) {
     return BottomAppBar(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -81,22 +81,22 @@ class _FactScreenState extends State<FactScreen> {
           children: <Widget>[
             Row(
               children: List<Widget>.generate(
-                _numPages,
+                numPages,
                 (index) => Container(
                   margin: EdgeInsets.symmetric(horizontal: 4.0),
                   width: 8.0,
                   height: 8.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _currentPage == index ? Colors.green : Colors.grey,
+                    color: currentPage == index ? Colors.green : Colors.grey,
                   ),
                 ),
               ),
             ),
             ElevatedButton(
               onPressed: () {
-                if (_currentPage < _numPages - 1) {
-                  _pageController.nextPage(
+                if (currentPage < numPages - 1) {
+                  pageController.nextPage(
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
@@ -107,7 +107,7 @@ class _FactScreenState extends State<FactScreen> {
                   );
                 }
               },
-              child: Text(_currentPage < _numPages - 1 ? 'SIGUIENTE' : 'EMPEZAR'),
+              child: Text(currentPage < numPages - 1 ? 'SIGUIENTE' : 'EMPEZAR'),
             ),
           ],
         ),
