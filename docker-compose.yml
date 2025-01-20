@@ -11,15 +11,6 @@ services:
       - "8080:8080"
     command: flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0
 
-  # flutter-prod:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.prod
-  #   volumes:
-  #     - .:/app
-  #     - ~/.pub-cache:/root/.pub-cache
-  #   working_dir: /app
-  #   command: flutter build apk --debug
   flutter-prod:
     build:
       context: .

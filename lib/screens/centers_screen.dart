@@ -226,7 +226,6 @@ class _CenterScreenState extends State<CenterScreen> {
               Polyline(
                 points: [
                   LatLng(userLocation?.latitude ?? 0, userLocation?.longitude ?? 0),
-                  // Add destination point here
                 ],
                 color: Colors.blue,
                 strokeWidth: 5.0,
@@ -239,415 +238,441 @@ class _CenterScreenState extends State<CenterScreen> {
             ],
           ),
           MarkerLayer(
-            markers: centers.map((center) => Marker(
-              point: center['position'],
-              width: 50,
-              height: 50,
-              builder: (context) => Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) => Container(
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 4,
-                                  width: 40,
-                                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 175),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
-                                            child: Image.asset(
-                                              center['image'],
-                                              width: 80,
-                                              height: 80,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          SizedBox(width: 16),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  center['name'],
-                                                  style: TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  center['website'],
-                                                  style: TextStyle(
-                                                    color: Colors.blue,
-                                                    decoration: TextDecoration.underline,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(height: 32),
-                                      Text(
-                                        center['description'],
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(height: 24),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.location_on, color: Colors.green),
-                                          title: Text(center['address']),
-                                        ),
-                                      ),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.schedule, color: Colors.green),
-                                          title: Text(center['schedule']),
-                                        ),
-                                      ),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.phone, color: Colors.green),
-                                          title: Text(center['phone']),
-                                        ),
-                                      ),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.email, color: Colors.green),
-                                          title: Text(center['email']),
-                                        ),
-                                      ),
-                                      SizedBox(height: 24),
-                                      Text(
-                                        'Materiales Aceptados',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Wrap(
-                                        spacing: 8,
-                                        children: (center['materials'] as List).map((material) => 
-                                          Chip(
-                                            label: Text(material),
-                                            backgroundColor: Colors.green[100],
-                                          ),
-                                        ).toList(),
-                                      ),
-                                      SizedBox(height: 24),
-                                      Text(
-                                        'Redes Sociales',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.facebook),
-                                            onPressed: () {},
-                                            color: Colors.blue,
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.camera_alt),
-                                            onPressed: () {},
-                                            color: Colors.purple,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 24),
-                                      Text(
-                                        'Video Presentación',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      InkWell(
-                                        onTap: () async {
-                                          final url = center['video'];
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 200,
-                                          margin: EdgeInsets.symmetric(horizontal: 16),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.circular(12),
-                                            image: DecorationImage(
-                                              image: AssetImage(center['image']),
-                                              fit: BoxFit.cover,
-                                              opacity: 0.7,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Container(
-                                              padding: EdgeInsets.all(16),
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Icon(
-                                                Icons.play_arrow,
-                                                color: Colors.white,
-                                                size: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 24),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    onLongPressStart: (_) {
-                      showBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) => Container(
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 4,
-                                  width: 40,
-                                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 175),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
-                                            child: Image.asset(
-                                              center['image'],
-                                              width: 80,
-                                              height: 80,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          SizedBox(width: 16),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  center['name'],
-                                                  style: TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  center['website'],
-                                                  style: TextStyle(
-                                                    color: Colors.blue,
-                                                    decoration: TextDecoration.underline,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(height: 32),
-                                      Text(
-                                        center['description'],
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(height: 24),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.location_on, color: Colors.green),
-                                          title: Text(center['address']),
-                                        ),
-                                      ),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.schedule, color: Colors.green),
-                                          title: Text(center['schedule']),
-                                        ),
-                                      ),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.phone, color: Colors.green),
-                                          title: Text(center['phone']),
-                                        ),
-                                      ),
-                                      Card(
-                                        child: ListTile(
-                                          leading: Icon(Icons.email, color: Colors.green),
-                                          title: Text(center['email']),
-                                        ),
-                                      ),
-                                      SizedBox(height: 24),
-                                      Text(
-                                        'Materiales Aceptados',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Wrap(
-                                        spacing: 8,
-                                        children: (center['materials'] as List).map((material) => 
-                                          Chip(
-                                            label: Text(material),
-                                            backgroundColor: Colors.green[100],
-                                          ),
-                                        ).toList(),
-                                      ),
-                                      SizedBox(height: 24),
-                                      Text(
-                                        'Redes Sociales',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.facebook),
-                                            onPressed: () {},
-                                            color: Colors.blue,
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.camera_alt),
-                                            onPressed: () {},
-                                            color: Colors.purple,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 24),
-                                      Text(
-                                        'Video Presentación',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      InkWell(
-                                        onTap: () async {
-                                          final url = center['video'];
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 200,
-                                          margin: EdgeInsets.symmetric(horizontal: 16),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.circular(12),
-                                            image: DecorationImage(
-                                              image: AssetImage(center['image']),
-                                              fit: BoxFit.cover,
-                                              opacity: 0.7,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Container(
-                                              padding: EdgeInsets.all(16),
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Icon(
-                                                Icons.play_arrow,
-                                                color: Colors.white,
-                                                size: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 24),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    onLongPressEnd: (_) {
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.green[700],
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
+            markers: [
+               Marker(
+                width: 80.0,
+                height: 80.0,
+                point:  LatLng(userLocation?.latitude ?? 0, userLocation?.longitude ?? 0),
+                builder: (ctx) => Container(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 40.0,
                       ),
-                      child: Icon(
-                        Icons.recycling,
-                        color: Colors.white,
-                        size: 30,
+                      Text(
+                        'Mi Ubicación',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ...centers.map((center) => Marker(
+                point: center['position'],
+                width: 50,
+                height: 50,
+                builder: (context) => Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => Container(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 4,
+                                    width: 40,
+                                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 175),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(8),
+                                              child: Image.asset(
+                                                center['image'],
+                                                width: 80,
+                                                height: 80,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            SizedBox(width: 16),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    center['name'],
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    center['website'],
+                                                    style: TextStyle(
+                                                      color: Colors.blue,
+                                                      decoration: TextDecoration.underline,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Divider(height: 32),
+                                        Text(
+                                          center['description'],
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.location_on, color: Colors.green),
+                                            title: Text(center['address']),
+                                          ),
+                                        ),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.schedule, color: Colors.green),
+                                            title: Text(center['schedule']),
+                                          ),
+                                        ),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.phone, color: Colors.green),
+                                            title: Text(center['phone']),
+                                          ),
+                                        ),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.email, color: Colors.green),
+                                            title: Text(center['email']),
+                                          ),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Text(
+                                          'Materiales Aceptados',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Wrap(
+                                          spacing: 8,
+                                          children: (center['materials'] as List).map((material) => 
+                                            Chip(
+                                              label: Text(material),
+                                              backgroundColor: Colors.green[100],
+                                            ),
+                                          ).toList(),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Text(
+                                          'Redes Sociales',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.facebook),
+                                              onPressed: () {},
+                                              color: Colors.blue,
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.camera_alt),
+                                              onPressed: () {},
+                                              color: Colors.purple,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 24),
+                                        Text(
+                                          'Video Presentación',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        InkWell(
+                                          onTap: () async {
+                                            final url = center['video'];
+                                            if (await canLaunch(url)) {
+                                              await launch(url);
+                                            }
+                                          },
+                                          child: Container(
+                                            height: 200,
+                                            margin: EdgeInsets.symmetric(horizontal: 16),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              borderRadius: BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                image: AssetImage(center['image']),
+                                                fit: BoxFit.cover,
+                                                opacity: 0.7,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Container(
+                                                padding: EdgeInsets.all(16),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: Colors.white,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 24),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      onLongPressStart: (_) {
+                        showBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => Container(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 4,
+                                    width: 40,
+                                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 175),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(8),
+                                              child: Image.asset(
+                                                center['image'],
+                                                width: 80,
+                                                height: 80,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            SizedBox(width: 16),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    center['name'],
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    center['website'],
+                                                    style: TextStyle(
+                                                      color: Colors.blue,
+                                                      decoration: TextDecoration.underline,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Divider(height: 32),
+                                        Text(
+                                          center['description'],
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.location_on, color: Colors.green),
+                                            title: Text(center['address']),
+                                          ),
+                                        ),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.schedule, color: Colors.green),
+                                            title: Text(center['schedule']),
+                                          ),
+                                        ),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.phone, color: Colors.green),
+                                            title: Text(center['phone']),
+                                          ),
+                                        ),
+                                        Card(
+                                          child: ListTile(
+                                            leading: Icon(Icons.email, color: Colors.green),
+                                            title: Text(center['email']),
+                                          ),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Text(
+                                          'Materiales Aceptados',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Wrap(
+                                          spacing: 8,
+                                          children: (center['materials'] as List).map((material) => 
+                                            Chip(
+                                              label: Text(material),
+                                              backgroundColor: Colors.green[100],
+                                            ),
+                                          ).toList(),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Text(
+                                          'Redes Sociales',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.facebook),
+                                              onPressed: () {},
+                                              color: Colors.blue,
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.camera_alt),
+                                              onPressed: () {},
+                                              color: Colors.purple,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 24),
+                                        Text(
+                                          'Video Presentación',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        InkWell(
+                                          onTap: () async {
+                                            final url = center['video'];
+                                            if (await canLaunch(url)) {
+                                              await launch(url);
+                                            }
+                                          },
+                                          child: Container(
+                                            height: 200,
+                                            margin: EdgeInsets.symmetric(horizontal: 16),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              borderRadius: BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                image: AssetImage(center['image']),
+                                                fit: BoxFit.cover,
+                                                opacity: 0.7,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Container(
+                                                padding: EdgeInsets.all(16),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: Colors.white,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 24),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      onLongPressEnd: (_) {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green[700],
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.recycling,
+                          color: Colors.white,
+                          size: 30,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )).toList(),
+                  ],
+                ),
+              )).toList(),
+            ],
           ),
         ],
       ),
