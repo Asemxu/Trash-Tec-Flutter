@@ -5,8 +5,10 @@ import '../services/calendar_content_service.dart';
 import '../widgets/calendar/calendar_screen_content_widget.dart';
 
 class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
+
   @override
-  CalendarScreenState createState() => CalendarScreenState();
+  State<CalendarScreen> createState() => CalendarScreenState();
 }
 
 class CalendarScreenState extends State<CalendarScreen> {

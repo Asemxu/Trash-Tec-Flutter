@@ -1,0 +1,49 @@
+# Usa la imagen oficial de Flutter en el canal beta
+FROM cirrusci/flutter:beta
+
+# Establece variables de entorno para Flutter y Android SDK
+ENV FLUTTER_ROOT=/usr/local/flutter
+ENV ANDROID_SDK_ROOT=/usr/local/android-sdk
+
+# Instala dependencias necesarias
+RUN apt-get update && apt-get install -y wget gnupg software-properties-common apt-transport-https
+
+# Añade el repositorio de Microsoft Edge
+RUN wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add -
+RUN add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main"
+
+# Instala Microsoft Edge
+RUN apt-get update && apt-get install -y microsoft-edge-stable
+
+# Acepta las licencias del SDK de Android
+RUN mkdir -p /root/.android && \
+    touch /root/.android/repositories.cfg && \
+    yes | sdkmanager --licenses && \
+    sdkmanager "platforms;android-31" "build-tools;31.0.0"
+
+# Establece el directorio de trabajo
+WORKDIR /app
+
+# Copia todos los archivos del proyecto a la imagen
+COPY . .
+
+# Instala las dependencias desde el directorio /app
+RUN cd /app && flutter pub get
+
+# Imprimir el contenido del directorio y el archivo package_config.json para depuración
+RUN ls -la /app/.dart_tool
+RUN cat /app/.dart_tool/package_config.json
+
+# Configura Android para usar el embedding v2
+RUN mkdir -p /app/android/app/src/main/kotlin/com/example/app_flutter && \
+    echo "org.gradle.jvmargs=-Xmx1536M" > /app/android/gradle.properties && \
+    echo "android.useAndroidX=true" >> /app/android/gradle.properties && \
+    echo "android.enableJetifier=true" >> /app/android/gradle.properties && \
+    echo "android.defaults.buildfeatures.buildconfig=true" >> /app/android/gradle.properties && \
+    echo "android.nonTransitiveRClass=true" >> /app/android/gradle.properties && \
+    echo 'package com.example.app_flutter\n\nimport io.flutter.embedding.android.FlutterActivity\n\nclass MainActivity: FlutterActivity() {\n}' > /app/android/app/src/main/kotlin/com/example/app_flutter/MainActivity.kt && \
+    sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 20/g' /app/android/app/build.gradle && \
+    sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 31/g' /app/android/app/build.gradle
+
+# Limpia y construye el APK en modo debug desde el directorio /app
+RUN cd /app && flutter clean && flutter build apk --debug

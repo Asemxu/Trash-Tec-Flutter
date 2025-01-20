@@ -20,11 +20,21 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
   void initState() {
     super.initState();
     FlutterError.onError = (FlutterErrorDetails details) {
-      setState(() {
-        hasError = true;
-        errorDetails = details;
-      });
+      onError(details);
     };
+  }
+
+  @override
+  void onError(FlutterErrorDetails details) {
+    print('=== Error Boundary Caught Error ===');
+    print('Error: ${details.exception}');
+    print('Stack trace: ${details.stack}');
+    print('===============================');
+    
+    setState(() {
+      hasError = true;
+      errorDetails = details;
+    });
   }
 
   @override

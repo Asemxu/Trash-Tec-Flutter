@@ -1,3 +1,4 @@
 {
-    "json.indent": "2"
+    "json.indent": "2",
+    "editor.indentSize": "tabSize",
 }

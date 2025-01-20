@@ -1,0 +1,50 @@
+# Usa la imagen oficial de Flutter desde GitHub Container Registry
+FROM ghcr.io/instrumentisto/flutter:3.0.0
+
+# Instala Java 17, compatible con las versiones más recientes de Gradle y el SDK de Android
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    apt-get clean
+
+# Establece JAVA_HOME para la versión de Java instalada
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Establece variables de entorno para Flutter y Android SDK
+ENV FLUTTER_ROOT=/usr/local/flutter
+ENV ANDROID_SDK_ROOT=/usr/local/android-sdk
+
+# Instala dependencias necesarias
+RUN apt-get update && apt-get install -y wget gnupg software-properties-common apt-transport-https
+
+# Acepta las licencias del SDK de Android
+RUN mkdir -p /root/.android && \
+    touch /root/.android/repositories.cfg && \
+    yes | sdkmanager --licenses && \
+    sdkmanager "platforms;android-31" "build-tools;31.0.0"
+
+# Establece el directorio de trabajo
+WORKDIR /app
+
+# Crear un nuevo proyecto de Flutter
+RUN flutter create -t app nuevo_app_flutter
+
+# Copia los archivos de tu proyecto antiguo al nuevo
+COPY . /app/nuevo_app_flutter/
+
+# Cambia el directorio de trabajo al nuevo proyecto
+WORKDIR /app/nuevo_app_flutter
+
+# Crear el archivo gradle-wrapper.properties directamente en el Dockerfile
+RUN mkdir -p android/gradle/wrapper
+RUN echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
+RUN echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
+RUN echo "zipStoreBase=GRADLE_USER_HOME" >> android/gradle/wrapper/gradle-wrapper.properties
+RUN echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
+RUN echo "distributionUrl=https\\://services.gradle.org/distributions/gradle-7.0.2-bin.zip" >> android/gradle/wrapper/gradle-wrapper.properties
+
+# Instala las dependencias desde el nuevo directorio
+RUN flutter pub get
+
+# Limpia y construye el APK en modo debug desde el nuevo directorio
+RUN flutter build apk --debug

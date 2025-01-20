@@ -6,8 +6,11 @@ import '../models/home_content.dart';
 import '../widgets/error_boundary_widget.dart';
 import 'home_screen.dart';
 import 'calendar_screen.dart';
-
+import 'recycling_screen.dart';
 import '../services/home_content_service.dart';
+import 'more_screen.dart';
+import 'centers_screen.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -17,7 +20,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -36,9 +39,9 @@ class MainScreenState extends State<MainScreen> {
           children: [
             HomeScreen(),
             CalendarScreen(),
-            // const CenterScreen(),
-            // const RecyclingScreen(),
-            // const MoreScreen(),
+            CenterScreen(),
+            RecyclingScreen(),
+            MoreScreen()
           ],
         ),
       ),
@@ -57,6 +60,12 @@ class MainScreenState extends State<MainScreen> {
   }
 
   void handleNavigationTap(int index) {
-    setState(() => selectedIndex = index);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          selectedIndex = index;
+        });
+      }
+    });
   }
 }

@@ -5,9 +5,9 @@ import '../services/home_content_service.dart';
 import '../widgets/home/home_screen_content_widget.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
   @override
-  HomeScreenState createState() => HomeScreenState();
-}
+  State<HomeScreen> createState() => HomeScreenState();}
 
 class HomeScreenState extends State<HomeScreen> {
   late Future<HomeScreenData> homeDataFuture;
